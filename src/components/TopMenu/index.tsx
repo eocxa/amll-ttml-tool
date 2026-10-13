@@ -115,22 +115,6 @@ export const TopMenu: FC = () => {
 				</Toolbar.Root>
 			)}
 
-			<Button
-				variant="solid"
-				color="indigo"
-				onClick={menu.onOpenServerSync}
-				style={{
-					cursor: "pointer",
-					fontWeight: 600,
-					display: "flex",
-					alignItems: "center",
-					gap: "6px",
-					marginLeft: "6px",
-				}}
-			>
-				🎵 Servidor de Música
-			</Button>
-
 			{activeServerTrackId && (
 				<Button
 					variant="solid"
