@@ -1,6 +1,8 @@
-import { Box, Flex } from "@radix-ui/themes";
+import { Box, Button, Flex } from "@radix-ui/themes";
 import { Toolbar } from "radix-ui";
 import { type FC, useEffect, useState } from "react";
+import { useAtomValue } from "jotai";
+import { activeServerTrackIdAtom } from "$/states/dialogs.ts";
 import {
 	keyDeleteSelectionAtom,
 	keyNewFileAtom,
@@ -46,6 +48,7 @@ export const TopMenu: FC = () => {
 	const { width } = useWindowSize();
 	const showHomeButton = width < 800;
 	const menu = useTopMenuActions();
+	const activeServerTrackId = useAtomValue(activeServerTrackIdAtom);
 
 	useKeyBindingAtom(keyNewFileAtom, menu.onNewFile, [menu.onNewFile]);
 	useKeyBindingAtom(keyOpenFileAtom, menu.onOpenFile, [menu.onOpenFile]);
@@ -111,6 +114,40 @@ export const TopMenu: FC = () => {
 					/>
 				</Toolbar.Root>
 			)}
+
+			<Button
+				variant="solid"
+				color="indigo"
+				onClick={menu.onOpenServerSync}
+				style={{
+					cursor: "pointer",
+					fontWeight: 600,
+					display: "flex",
+					alignItems: "center",
+					gap: "6px",
+					marginLeft: "6px",
+				}}
+			>
+				🎵 Servidor de Música
+			</Button>
+
+			{activeServerTrackId && (
+				<Button
+					variant="solid"
+					color="green"
+					onClick={menu.onSaveToServer}
+					style={{
+						cursor: "pointer",
+						fontWeight: 600,
+						display: "flex",
+						alignItems: "center",
+						gap: "6px",
+					}}
+				>
+					💾 Guardar en Servidor
+				</Button>
+			)}
+
 			<Box style={{ marginLeft: "16px" }}>
 				<HeaderFileInfo />
 			</Box>

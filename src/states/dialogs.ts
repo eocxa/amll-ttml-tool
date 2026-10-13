@@ -35,3 +35,13 @@ export const ttmlErrorDialogAtom = atom<{
 	error: JsError;
 	rawText?: string;
 } | null>(null);
+
+export const serverSyncDialogAtom = atom(false);
+export const activeServerTrackIdAtom = atomWithStorage<string | null>(
+	"activeServerTrackId",
+	null,
+);
+export const musicServerUrlAtom = atomWithStorage<string>(
+	"musicServerUrl",
+	"http://localhost:8000",
+);

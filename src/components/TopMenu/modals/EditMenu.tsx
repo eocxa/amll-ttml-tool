@@ -22,40 +22,40 @@ const EditMenuItems = () => {
 				shortcut={formatKeyBindings(menu.undoKey)}
 				disabled={menu.undoDisabled}
 			>
-				<Trans i18nKey="topBar.menu.undo">撤销</Trans>
+				<Trans i18nKey="topBar.menu.undo">Deshacer</Trans>
 			</DropdownMenu.Item>
 			<DropdownMenu.Item
 				onSelect={menu.onRedo}
 				shortcut={formatKeyBindings(menu.redoKey)}
 				disabled={menu.redoDisabled}
 			>
-				<Trans i18nKey="topBar.menu.redo">重做</Trans>
+				<Trans i18nKey="topBar.menu.redo">Rehacer</Trans>
 			</DropdownMenu.Item>
 			<DropdownMenu.Separator />
 			<DropdownMenu.Item
 				onSelect={menu.onSelectAll}
 				shortcut={formatKeyBindings(menu.selectAllLinesKey)}
 			>
-				<Trans i18nKey="topBar.menu.selectAllLines">选中所有歌词行</Trans>
+				<Trans i18nKey="topBar.menu.selectAllLines">Seleccionar todas las líneas</Trans>
 			</DropdownMenu.Item>
 			<DropdownMenu.Item
 				onSelect={menu.onUnselectAll}
 				shortcut={formatKeyBindings(menu.unselectAllLinesKey)}
 			>
-				<Trans i18nKey="topBar.menu.unselectAllLines">取消选中所有歌词行</Trans>
+				<Trans i18nKey="topBar.menu.unselectAllLines">Deseleccionar todas las líneas</Trans>
 			</DropdownMenu.Item>
 			<DropdownMenu.Item
 				onSelect={menu.onSelectInverted}
 				shortcut={formatKeyBindings(menu.selectInvertedLinesKey)}
 			>
-				<Trans i18nKey="topBar.menu.invertSelectAllLines">反选所有歌词行</Trans>
+				<Trans i18nKey="topBar.menu.invertSelectAllLines">Invertir selección de líneas</Trans>
 			</DropdownMenu.Item>
 			<DropdownMenu.Item
 				onSelect={menu.onSelectWordsOfMatchedSelection}
 				shortcut={formatKeyBindings(menu.selectWordsOfMatchedSelectionKey)}
 			>
 				<Trans i18nKey="topBar.menu.selectWordsOfMatchedSelection">
-					选择单词匹配项
+					Seleccionar palabras que coincidan
 				</Trans>
 			</DropdownMenu.Item>
 			<DropdownMenu.Separator />
@@ -63,19 +63,19 @@ const EditMenuItems = () => {
 				onSelect={menu.onDeleteSelection}
 				shortcut={formatKeyBindings(menu.deleteSelectionKey)}
 			>
-				<Trans i18nKey="contextMenu.deleteWords">删除选定单词</Trans>
+				<Trans i18nKey="contextMenu.deleteWords">Eliminar palabras seleccionadas</Trans>
 			</DropdownMenu.Item>
 			<DropdownMenu.Separator />
 			<DropdownMenu.Item onSelect={menu.onOpenTimeShift}>
-				{t("topBar.menu.timeShift", "平移时间...")}
+				{t("topBar.menu.timeShift", "Desplazamiento de tiempo...")}
 			</DropdownMenu.Item>
 			<DropdownMenu.Separator />
 			<DropdownMenu.Item onSelect={menu.onOpenMetadataEditor}>
-				<Trans i18nKey="topBar.menu.editMetadata">编辑歌词元数据</Trans>
+				<Trans i18nKey="topBar.menu.editMetadata">Editar metadatos de letras</Trans>
 			</DropdownMenu.Item>
 			<DropdownMenu.Separator />
 			<DropdownMenu.Item onSelect={menu.onOpenSettings}>
-				<Trans i18nKey="settingsDialog.title">首选项</Trans>
+				<Trans i18nKey="settingsDialog.title">Preferencias</Trans>
 			</DropdownMenu.Item>
 		</>
 	);
@@ -86,7 +86,7 @@ export const EditMenu = (props: EditMenuProps) => {
 		return (
 			<DropdownMenu.Sub>
 				<DropdownMenu.SubTrigger>
-					<Trans i18nKey="topBar.menu.edit">编辑</Trans>
+					<Trans i18nKey="topBar.menu.edit">Editar</Trans>
 				</DropdownMenu.SubTrigger>
 				<DropdownMenu.SubContent>
 					<EditMenuItems />
@@ -100,7 +100,7 @@ export const EditMenu = (props: EditMenuProps) => {
 			<Toolbar.Button asChild>
 				<DropdownMenu.Trigger style={props.triggerStyle}>
 					<Button variant="soft" style={props.buttonStyle}>
-						<Trans i18nKey="topBar.menu.edit">编辑</Trans>
+						<Trans i18nKey="topBar.menu.edit">Editar</Trans>
 					</Button>
 				</DropdownMenu.Trigger>
 			</Toolbar.Button>

@@ -15,6 +15,7 @@ import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import { uid } from "uid";
 import { audioEngine } from "$/modules/audio/audio-engine";
+import { extractEmbeddedLyrics } from "$/modules/audio/utils/embedded-lyrics";
 import { getProjectList } from "$/modules/project/autosave/autosave";
 import { applyDefaultTtmlAuthorMetadata } from "$/modules/project/logic/default-metadata";
 import { getSuggestedTtmlFileName } from "$/modules/project/logic/metadata-filename";
@@ -179,7 +180,7 @@ export const useFileOpener = () => {
 				if (AUDIO_EXTENSIONS.has(ext)) {
 					void audioEngine
 						.loadMusic(file)
-						.then((metadata) => {
+						.then(async (metadata) => {
 							setLyricLines((prev) => {
 								const nextMetadata = prev.metadata.map((item) => ({
 									...item,
@@ -200,6 +201,46 @@ export const useFileOpener = () => {
 								if (!metadataChanged && !defaultChanged) return prev;
 								return { ...prev, metadata: nextMetadata };
 							});
+
+							// Intentar extraer letra incrustada en el audio
+							try {
+								const embedded = await extractEmbeddedLyrics(
+									audioEngine.rawMetadata,
+									file,
+								);
+								if (embedded) {
+									const isTtml =
+										embedded.trim().startsWith("<tt") ||
+										embedded.includes("<tt ") ||
+										embedded.includes("http://www.w3.org/ns/ttml");
+									let extractedData: TTMLLyric | null = null;
+									if (isTtml) {
+										const res = ttmlToAmll(embedded);
+										if (res.success) {
+											extractedData = normalizeAmllLyricResult(res.data);
+										}
+									} else if (embedded.includes("[")) {
+										const lines = parseLrc(embedded);
+										if (lines.length > 0) {
+											extractedData = normalizeLyricLines(lines);
+										}
+									}
+									if (extractedData) {
+										mergeExtractedMetadata(extractedData.metadata, metadata);
+										applyDefaultTtmlAuthorMetadata(extractedData.metadata, {
+											githubId: defaultTtmlAuthorGithub,
+											githubLogin: defaultTtmlAuthorGithubLogin,
+										});
+										setProjectId(uid());
+										setNewLyricLines(extractedData);
+										const base = file.name.replace(/\.[^/.]+$/, "");
+										setSaveFileName(`${base}.ttml`);
+										toast.success("¡Letra incrustada extraída y lista para editar!");
+									}
+								}
+							} catch (embedErr) {
+								fileOpenerLogger.warn("Error leyendo letras embebidas:", embedErr);
+							}
 						})
 						.catch((e) => {
 							fileOpenerLogger.error(
@@ -213,7 +254,13 @@ export const useFileOpener = () => {
 				let lyricData: TTMLLyric | null = null;
 				const text = await file.text();
 
-				if (ext === "ttml") {
+				const isTtmlContent =
+					ext === "ttml" ||
+					text.trim().startsWith("<tt") ||
+					text.includes("<tt ") ||
+					text.includes("http://www.w3.org/ns/ttml");
+
+				if (isTtmlContent) {
 					const result = ttmlToAmll(text);
 
 					if (result.success) {

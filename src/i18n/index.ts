@@ -21,20 +21,41 @@ declare module "i18next" {
 	}
 }
 
+const esResource = (resources as any)["es-ES"] || (resources as any)["es"] || {};
+
+const aliasedResources = {
+	...resources,
+	es: esResource,
+	"es-ES": esResource,
+	"es-MX": esResource,
+	"es-419": esResource,
+	"es-US": esResource,
+	"es-AR": esResource,
+	"es-CO": esResource,
+	"es-CL": esResource,
+	"es-PE": esResource,
+};
+
 i18n
 	.use(initReactI18next) // passes i18n down to react-i18next
 	.use(ICU)
 	.init({
-		resources,
+		resources: aliasedResources,
 		debug: import.meta.env.DEV,
-		fallbackLng: "zh-CN",
+		lng: "es-ES",
+		fallbackLng: "es-ES",
 		interpolation: {
 			escapeValue: false, // react already safes from xss
 		},
 		returnNull: false,
 	})
-	.then(() =>
-		i18n.changeLanguage(localStorage.getItem("language") || navigator.language),
-	);
+	.then(() => {
+		const saved = localStorage.getItem("language");
+		if (saved) {
+			i18n.changeLanguage(saved.startsWith("es") ? "es-ES" : saved);
+		} else {
+			i18n.changeLanguage("es-ES");
+		}
+	});
 
 export default i18n;

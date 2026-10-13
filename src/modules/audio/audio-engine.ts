@@ -183,6 +183,10 @@ class AudioEngineWrapper extends EventTarget {
 		return this.engine.cover;
 	}
 
+	get rawMetadata(): Record<string, string> {
+		return this.engine.metadata || {};
+	}
+
 	get musicPlaying() {
 		return this.engine.state === "playing";
 	}

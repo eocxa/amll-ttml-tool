@@ -3,6 +3,7 @@ import { useAtom, useAtomValue, useSetAtom, useStore } from "jotai";
 import { useSetImmerAtom, withImmer } from "jotai-immer";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 import saveFile from "save-file";
 import { uid } from "uid";
 import { useFileOpener } from "$/hooks/useFileOpener.ts";
@@ -17,11 +18,14 @@ import { useSegmentationConfig } from "$/modules/segmentation/utils/useSegmentat
 import { amllToTTML, ttmlLyricToAmllResult } from "$/modules/ttml-processor";
 import { useTtmlErrorHandler } from "$/modules/ttml-processor/useTtmlErrorHandler";
 import {
+	activeServerTrackIdAtom,
 	advancedSegmentationDialogAtom,
 	confirmDialogAtom,
 	historyRestoreDialogAtom,
 	latencyTestDialogAtom,
 	metadataEditorDialogAtom,
+	musicServerUrlAtom,
+	serverSyncDialogAtom,
 	settingsDialogAtom,
 	submitToAMLLDBDialogAtom,
 	syllableSmoothingDialogAtom,
@@ -175,12 +179,64 @@ export const useTopMenuActions = () => {
 		}
 	}, [openFile]);
 
-	const onSaveFile = useCallback(() => {
+	const onSaveToServer = useCallback(async () => {
+		const trackId = store.get(activeServerTrackIdAtom);
+		const rawServerUrl = store.get(musicServerUrlAtom);
+		if (!trackId) {
+			toast.warn("No hay ninguna pista activa del servidor. Abre una canción desde 'Servidor de Música' primero.");
+			return;
+		}
+		let serverUrl = (rawServerUrl || "").trim();
+		if (!serverUrl.startsWith("http://") && !serverUrl.startsWith("https://")) {
+			serverUrl = `http://${serverUrl}`;
+		}
+		serverUrl = serverUrl.replace(/\/+$/, "");
+
+		try {
+			const lyric = store.get(lyricLinesAtom);
+			const amllResult = ttmlLyricToAmllResult(lyric);
+			const result = amllToTTML(amllResult);
+			if (!result.success) {
+				handleTtmlError(result.error, "Error al generar TTML");
+				return;
+			}
+
+			toast.info("Guardando y reincrustando en el servidor...");
+			const res = await fetch(`${serverUrl}/api/lyrics/${encodeURIComponent(trackId)}`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({ raw_ttml: result.data }),
+			});
+
+			if (!res.ok) {
+				const errData = await res.json().catch(() => ({}));
+				throw new Error(errData.detail || `HTTP ${res.status}: ${res.statusText}`);
+			}
+
+			toast.success("¡TTML guardado y reincrustado con éxito en el archivo de audio del servidor!");
+		} catch (err: any) {
+			topMenuLogger.error("Failed to save lyrics to server", err);
+			toast.error(`Error al guardar en el servidor: ${err.message || String(err)}`);
+		}
+	}, [store, handleTtmlError]);
+
+	const onOpenServerSync = useCallback(() => {
+		store.set(serverSyncDialogAtom, true);
+	}, [store]);
+
+	const onSaveFile = useCallback(async () => {
+		const trackId = store.get(activeServerTrackIdAtom);
+		if (trackId) {
+			await onSaveToServer();
+			return;
+		}
 		try {
 			const amllResult = ttmlLyricToAmllResult(store.get(lyricLinesAtom));
 			const result = amllToTTML(amllResult);
 			if (!result.success) {
-				handleTtmlError(result.error, `Error when generating TTML`);
+				handleTtmlError(result.error, `Error al generar TTML`);
 				return;
 			}
 			const b = new Blob([result.data], { type: "text/xml" });
@@ -188,7 +244,7 @@ export const useTopMenuActions = () => {
 		} catch (e) {
 			topMenuLogger.error("Failed to save TTML file", e);
 		}
-	}, [saveFileName, store, handleTtmlError]);
+	}, [saveFileName, store, handleTtmlError, onSaveToServer]);
 
 	const onOpenHistoryRestore = useCallback(() => {
 		setHistoryRestoreDialog(true);
@@ -475,6 +531,8 @@ export const useTopMenuActions = () => {
 		onOpenHistoryRestore,
 		onSaveFileToClipboard,
 		onSubmitToAMLLDB,
+		onOpenServerSync,
+		onSaveToServer,
 		onUndo,
 		onRedo,
 		onSelectAll,

@@ -10,6 +10,7 @@ import { MetadataEditor } from "$/modules/project/modals/MetadataEditor.tsx";
 import { SubmitToAMLLDBDialog } from "$/modules/project/modals/SubmitToAmll.tsx";
 import { AdvancedSegmentationDialog } from "$/modules/segmentation/components/AdvancedSegmentation.tsx";
 import { SplitWordDialog } from "$/modules/segmentation/components/split-word.tsx";
+import { ServerSyncModal } from "$/modules/project/modals/ServerSyncModal.tsx";
 import { SettingsDialog } from "$/modules/settings/modals/index.tsx";
 import { ConfirmationDialog } from "./confirmation.tsx";
 import { TtmlErrorDialog } from "./TtmlErrorDialog.tsx";
@@ -20,6 +21,7 @@ export const Dialogs = () => {
 			<ImportFromText />
 			<ImportFromLRCLIB />
 			<MetadataEditor />
+			<ServerSyncModal />
 			<SettingsDialog />
 			<SplitWordDialog />
 			<ReplaceWordDialog />

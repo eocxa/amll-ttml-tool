@@ -21,33 +21,33 @@ const FileMenuItems = () => {
 				onSelect={menu.onNewFile}
 				shortcut={formatKeyBindings(menu.newFileKey)}
 			>
-				<Trans i18nKey="topBar.menu.newLyric">新建 TTML 文件</Trans>
+				<Trans i18nKey="topBar.menu.newLyric">Nuevo archivo TTML</Trans>
 			</DropdownMenu.Item>
 			<DropdownMenu.Item
 				onSelect={menu.onOpenFile}
 				shortcut={formatKeyBindings(menu.openFileKey)}
 			>
-				<Trans i18nKey="topBar.menu.openLyric">打开 TTML 文件</Trans>
+				<Trans i18nKey="topBar.menu.openLyric">Abrir archivo TTML</Trans>
 			</DropdownMenu.Item>
 			<DropdownMenu.Item onSelect={menu.onOpenFileFromClipboard}>
 				<Trans i18nKey="topBar.menu.openFromClipboard">
-					从剪切板打开 TTML 文件
+					Abrir TTML desde portapapeles
 				</Trans>
 			</DropdownMenu.Item>
 			<DropdownMenu.Item
 				onSelect={menu.onSaveFile}
 				shortcut={formatKeyBindings(menu.saveFileKey)}
 			>
-				<Trans i18nKey="topBar.menu.saveLyric">保存 TTML 文件</Trans>
+				<Trans i18nKey="topBar.menu.saveLyric">Guardar archivo TTML</Trans>
 			</DropdownMenu.Item>
 			<DropdownMenu.Separator />
 			<DropdownMenu.Item onSelect={menu.onOpenHistoryRestore}>
-				{t("topBar.menu.restoreFromHistory", "从历史记录恢复...")}
+				{t("topBar.menu.restoreFromHistory", "Restaurar desde historial...")}
 			</DropdownMenu.Item>
 			<DropdownMenu.Separator />
 			<DropdownMenu.Item onSelect={menu.onSaveFileToClipboard}>
 				<Trans i18nKey="topBar.menu.saveLyricToClipboard">
-					保存 TTML 文件到剪切板
+					Copiar TTML al portapapeles
 				</Trans>
 			</DropdownMenu.Item>
 			<DropdownMenu.Separator />
@@ -55,8 +55,15 @@ const FileMenuItems = () => {
 			<DropdownMenu.Separator />
 			<DropdownMenu.Item onSelect={menu.onSubmitToAMLLDB}>
 				<Trans i18nKey="topBar.menu.uploadToAMLLDB">
-					上传到 AMLL 歌词数据库
+					Subir a base de datos AMLL
 				</Trans>
+			</DropdownMenu.Item>
+			<DropdownMenu.Separator />
+			<DropdownMenu.Item onSelect={menu.onOpenServerSync}>
+				{t("topBar.menu.serverSync", "Servidor de Música (Tailscale / HTTP)...")}
+			</DropdownMenu.Item>
+			<DropdownMenu.Item onSelect={menu.onSaveToServer}>
+				{t("topBar.menu.saveToServer", "Guardar y reincrustar en el servidor")}
 			</DropdownMenu.Item>
 		</>
 	);
@@ -67,7 +74,7 @@ export const FileMenu = (props: FileMenuProps) => {
 		return (
 			<DropdownMenu.Sub>
 				<DropdownMenu.SubTrigger>
-					<Trans i18nKey="topBar.menu.file">文件</Trans>
+					<Trans i18nKey="topBar.menu.file">Archivo</Trans>
 				</DropdownMenu.SubTrigger>
 				<DropdownMenu.SubContent>
 					<FileMenuItems />
@@ -81,7 +88,7 @@ export const FileMenu = (props: FileMenuProps) => {
 			<Toolbar.Button asChild>
 				<DropdownMenu.Trigger>
 					<Button variant="soft" style={props.buttonStyle}>
-						<Trans i18nKey="topBar.menu.file">文件</Trans>
+						<Trans i18nKey="topBar.menu.file">Archivo</Trans>
 					</Button>
 				</DropdownMenu.Trigger>
 			</Toolbar.Button>

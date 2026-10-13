@@ -35,6 +35,10 @@
 		"importFile": {
 			"title": "Confirmar importar letras",
 			"description": "Tienes cambios sin guardar. Si continúas, estos cambios se perderán. ¿Estás seguro de que deseas importar nuevas letras?"
+		},
+		"useMetadataName": {
+			"title": "¿Usar nombre de metadatos?",
+			"description": "¿Deseas usar \"{name}\" como nombre de archivo?"
 		}
 	},
 	"ribbonBar": {
@@ -62,7 +66,11 @@
 			"translatedLyric": "Traducción",
 			"romanLyric": "Romanización",
 			"layoutMode": "Diseño",
-			"auxiliaryLineDisplay": "Mostrar línea auxiliar"
+			"auxiliaryLineDisplay": "Mostrar línea auxiliar",
+			"duration": "Duración",
+			"views": "Vistas",
+			"showOutline": "Esquema",
+			"showBpmPanel": "BPM"
 		},
 		"previewMode": {
 			"lyrics": "Letras",
@@ -87,7 +95,8 @@
 			"keyBindingReference": "Referencia de atajos",
 			"startSync": "Marcar inicio",
 			"continuousSync": "Confirmar",
-			"endSync": "Marcar fin"
+			"endSync": "Marcar fin",
+			"bgLyricIgnoreSync": "Ignorar voces de fondo"
 		},
 		"loading": "Cargando panel…"
 	},
@@ -128,6 +137,41 @@
 				"enable": "Habilitar autoguardado",
 				"interval": "Intervalo de guardado (minutos)",
 				"limit": "Instantáneas a conservar"
+			},
+			"translationOutputMode": "Estilo de exportación de traducción",
+			"translationOutputModeDesc": {
+				"line1": "El estilo AMLL incrusta las traducciones de línea como x-translation,",
+				"line2": "x-bg tiene sus propios tiempos de inicio y fin.",
+				"line3": "El estilo Apple Music escribe las traducciones en iTunesMetadata dentro de <head>,",
+				"line4": "pero x-bg no tiene tiempos de línea."
+			},
+			"translationOutputModeOptions": {
+				"amll": "Estilo AMLL",
+				"appleMusic": "Estilo Apple Music"
+			},
+			"defaultTtmlAuthorGithub": "ID de GitHub del autor de TTML por defecto",
+			"defaultTtmlAuthorGithubDesc": "Se rellena automáticamente si ttmlAuthorGithub está vacío.",
+			"defaultTtmlAuthorGithubLogin": "Usuario de GitHub del autor de TTML por defecto",
+			"defaultTtmlAuthorGithubLoginDesc": "Se rellena automáticamente si ttmlAuthorGithubLogin está vacío.",
+			"customBackgroundDesc": "Elige una imagen para usar como fondo.",
+			"customBackgroundPick": "Elegir imagen",
+			"customBackgroundClear": "Limpiar",
+			"customBackgroundOpacity": "Opacidad",
+			"customBackgroundOpacityWarning": "Si este valor es muy alto, el contenido de la página puede ser difícil de leer.",
+			"customBackgroundMask": "Máscara",
+			"customBackgroundBlur": "Radio de desenfoque",
+			"customBackgroundBrightness": "Brillo",
+			"customBackground": "Fondo personalizado",
+			"customBackgroundEnabled": "Fondo establecido",
+			"customBackgroundManage": "Ajustes",
+			"stretchAlgorithm": "Algoritmo de estiramiento temporal de audio",
+			"stretchAlgorithmDesc": {
+				"spectral": "Espectral (Phase Vocoder): Mayor fidelidad, pero puede aumentar ligeramente el uso de recursos",
+				"wsola": "WSOLA: Algoritmo clásico. Menor calidad de audio, pero menor consumo de recursos"
+			},
+			"stretchAlgorithmOptions": {
+				"spectral": "Espectral",
+				"wsola": "WSOLA"
 			}
 		},
 		"about": {
@@ -142,13 +186,23 @@
 			"display": "Visualización",
 			"timing": "Temporización",
 			"playback": "Reproducción",
-			"autosave": "Autoguardado"
+			"autosave": "Autoguardado",
+			"translationOutput": "Exportación",
+			"metadata": "Metadatos"
 		},
 		"spectrogram": {
 			"palette": "Paleta de colores",
 			"paletteCustom": "Personalizada",
 			"gradientEditorDesc": "Un valor de Pos de 0.0 corresponde a la parte más silenciosa, y 1.0 corresponde a la parte más fuerte. Se recomienda usar colores más brillantes para valores de Pos más grandes.",
-			"addStop": "Añadir punto de color"
+			"addStop": "Añadir punto de color",
+			"customPaletteTitle": "Esquema de colores del espectrograma"
+		},
+		"personalization": {
+			"theme": "Tema de apariencia",
+			"themeDesc": "Elige entre claro, oscuro o según el sistema.",
+			"themeLight": "Claro",
+			"themeDark": "Oscuro",
+			"themeAuto": "Automático"
 		}
 	},
 	"topBar": {
@@ -203,7 +257,16 @@
 				"toYRC": "Exportar a YRC",
 				"toLrcfySylb": "Exportar a Lyricify Syllable",
 				"toASS": "Exportar a subtítulos ASS"
-			}
+			},
+			"serverSync": "Servidor de Música (Tailscale / HTTP)...",
+			"saveToServer": "Guardar y reincrustar en el servidor",
+			"perWordRomanization": {
+				"index": "Romanización por palabra",
+				"distribute": "Distribuir romanización...",
+				"check": "Comprobar romanización",
+				"autoRuby": "Auto Ruby"
+			},
+			"syllableSmoothing": "Suavizar línea de tiempo..."
 		}
 	},
 	"header": {
@@ -211,7 +274,8 @@
 			"saving": "Guardando...",
 			"pending": "Guardando...",
 			"savedAt": "Último guardado a las",
-			"saved": "Guardado"
+			"saved": "Guardado",
+			"autoSavedAt": "Guardado automático a las {time}"
 		},
 		"popover": {
 			"filename": "Nombre de archivo",
@@ -231,7 +295,9 @@
 		"replaceWord": "Reemplazar palabra…",
 		"combineWords": "Combinar palabras",
 		"moveFollowingWordToNewLine": "Mover siguientes a nueva línea",
-		"moveWordToNewLine": "Mover {count, plural, one {palabra} other {palabras}} a nueva línea"
+		"moveWordToNewLine": "Mover {count, plural, one {palabra} other {palabras}} a nueva línea",
+		"pasteTTML": "Pegar TTML",
+		"newLine": "Nueva línea"
 	},
 	"settingsDialog": {
 		"title": "Preferencias",
@@ -280,24 +346,58 @@
 				"Sync": "Sincronización",
 				"Audio": "Audio",
 				"Spectrogram": "Espectrograma"
-			}
+			},
+			"moveFirstWordAndPlay": "Tiempo - Ir a primera palabra y reproducir",
+			"moveLastWordAndPlay": "Tiempo - Ir a última palabra y reproducir"
 		},
 		"tab": {
 			"common": "General",
 			"keybindings": "Atajos de teclado",
-			"spectrogram": "Espectrograma"
+			"spectrogram": "Espectrograma",
+			"about": "Acerca de",
+			"general": "General",
+			"appearance": "Apariencia"
 		}
 	},
 	"error": {
 		"unsupportedFileFormat": "Formato de archivo no soportado: {ext}",
-		"openFileFailed": "Error al abrir archivo"
+		"openFileFailed": "Error al abrir archivo",
+		"ttml": {
+			"copied": "Copiado al portapapeles",
+			"kind": {
+				"AttrError": "Error de atributo XML",
+				"EntityError": "Entidad XML desconocida",
+				"InvalidTimestamp": "Formato de marca de tiempo no válido",
+				"MissingAttribute": "Falta atributo obligatorio",
+				"UnexpectedEof": "Fin de archivo inesperado",
+				"XmlError": "Error de sintaxis XML",
+				"ParseError": "Error general de análisis"
+			},
+			"title": "Error al procesar TTML",
+			"subtitle": "Ocurrió un error al procesar el archivo TTML.",
+			"close": "Cerrar",
+			"copyError": "Copiar registro de error",
+			"suggestion": {
+				"AttrError": "Comprueba que los atributos XML tengan el formato correcto.",
+				"EntityError": "Comprueba que las referencias de entidad XML utilizadas sean válidas.",
+				"InvalidTimestamp": "El formato permitido es 'hh:mm:ss.sss'. Ejemplo: '1:03:36.120'.",
+				"MissingAttribute": "Comprueba el registro anterior y añade los atributos obligatorios.",
+				"UnexpectedEof": "Asegúrate de que todas las etiquetas abiertas (como </tt> o </body>) estén bien cerradas.",
+				"XmlError": "Comprueba si el archivo contiene errores de sintaxis XML.",
+				"ParseError": "Consulta el registro anterior y comprueba que el formato sea correcto."
+			},
+			"copyFailed": "Error al copiar"
+		},
+		"pasteClipboardFailed": "Error al leer el portapapeles"
 	},
 	"audioPanel": {
 		"volume": "Volumen",
 		"playbackRate": "Velocidad de reproducción",
 		"clickToLoadMusic": "Haz clic en el icono para cargar música",
 		"playPause": "Reproducir / pausar música",
-		"expandSpectrogram": "Expandir / contraer espectrograma"
+		"expandSpectrogram": "Expandir / contraer espectrograma",
+		"bpm": "BPM",
+		"bpmError": "Error"
 	},
 	"audio": {
 		"status": {
@@ -346,7 +446,9 @@
 		"restore": "Restaurar",
 		"about": "Acerca de",
 		"remove": "Eliminar",
-		"clickToSet": "Haz clic para establecer "
+		"clickToSet": "Haz clic para establecer ",
+		"copyTo": "Copiar a",
+		"moveTo": "Mover a"
 	},
 	"lyricLineView": {
 		"translatedLabel": "Traducción:",
@@ -483,7 +585,8 @@
 		"customKey": "Clave personalizada",
 		"addPresets": "Añadir todas las claves predefinidas",
 		"clear": "Limpiar",
-		"info": "Más información"
+		"info": "Más información",
+		"emptyItem": "No se han añadido entradas a esta sección todavía."
 	},
 	"submitToAMLLDB": {
 		"validation": {
@@ -577,17 +680,77 @@
 		"appName": "Herramienta TTML de Letras estilo Apple Music",
 		"description": "Una herramienta de edición y línea de tiempo TTML palabra por palabra para letras estilo Apple Music",
 		"buildDate": "Fecha de compilación: {date}",
-		"gitCommit": "Commit de Git: {commit}"
+		"gitCommit": "Commit de Git: {commit}",
+		"unknown": "desconocido"
 	},
 	"spectrogram": {
 		"invalidEndTime": "No se puede seleccionar este tiempo de fin",
 		"noAudioLoaded": "Por favor carga un archivo de audio para renderizar el espectrograma",
 		"loadAudio": "Cargar un archivo de audio",
-		"showUnselectedLines": "Mostrar líneas no seleccionadas"
+		"showUnselectedLines": "Mostrar líneas no seleccionadas",
+		"decoding": "Decodificando audio, por favor espera...",
+		"showBeatLines": "Mostrar pulsos en el espectrograma",
+		"clickToCalibrateBeatN": "Haz clic para calibrar el pulso {n}"
 	},
 	"pwa": {
 		"offlineReady": "Sitio almacenado en caché exitosamente para uso sin conexión",
 		"updateRefresh": "Sitio actualizado, ¡actualiza para usar la última versión!",
 		"refresh": "Actualizar"
+	},
+	"latencyTestDialog": {
+		"title": "Prueba de latencia y desfase temporal",
+		"description": "Elige tu BPM preferido y presiona la tecla {key} con cada pitido para medir la latencia.",
+		"latencyDisplay": {
+			"fastest": "Más rápido",
+			"current": {
+				"none": "Sin medir",
+				"fast": "Temprano",
+				"slow": "Tarde",
+				"perfect": "Perfecto"
+			},
+			"slowest": "Más lento"
+		},
+		"bpmInputLabel": "Tempo (BPM)",
+		"button": {
+			"stop": "Detener",
+			"start": "Iniciar"
+		}
+	},
+	"lyricEditor": {
+		"locate": "ubicar"
+	},
+	"sidebar": {
+		"outline": {
+			"emptyLine": "Vacío",
+			"title": "Esquema"
+		},
+		"bpm": {
+			"title": "BPM",
+			"analyzing": "Analizando",
+			"halve": "Reducir a la mitad BPM",
+			"double": "Duplicar BPM",
+			"reset": "Restablecer BPM",
+			"followPlaybackRate": "Seguir velocidad de reproducción",
+			"manualCalibration": "Calibración manual por pulsaciones",
+			"tapInstructionPrefix": "Presiona ",
+			"tapInstructionSuffix": " o haz clic aquí al ritmo de la música",
+			"showBeatLines": "Mostrar pulsos en el espectrograma",
+			"slidingWindowTip": "Solo se utilizan los últimos 10 puntos de calibración",
+			"spectrogramCalibration": "Calibrar con espectrograma",
+			"clickOnSpectrogramToCalibrate": "Haz clic en el espectrograma para calibrar"
+		}
+	},
+	"syllableSmoothingDialog": {
+		"title": "Suavizar línea de tiempo",
+		"thresholdWarning": "Un umbral demasiado alto puede estirar demasiado las sílabas.",
+		"thresholdLabel": "Umbral de suavizado",
+		"thresholdLow": "Bajo (5%)",
+		"thresholdMedium": "Medio (15%)",
+		"thresholdHigh": "Alto (30%)",
+		"thresholdCustom": "Personalizado",
+		"customThresholdInput": "Umbral",
+		"mergeSyllables": "Fusionar sílabas",
+		"mergeSyllablesHint": "Produce letras estilo Apple Music donde los caracteres CJK se fusionan.",
+		"description": "Suaviza la línea de tiempo para sílabas CJK.\nNo suaviza sílabas de otros idiomas."
 	}
 }

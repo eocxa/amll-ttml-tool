@@ -2,13 +2,10 @@ import { defineConfig } from "i18next-cli";
 
 export default defineConfig({
 	locales: [
+		"es-ES",
+		"es",
 		"zh-CN",
 		"en-US",
-
-		// 因为缺少这些语言的维护者，暂时不生成它们的翻译键值
-		// "cs-CZ",
-		// "da-DK",
-		// "es-ES",
 		// "fr-FR",
 		// "id-ID",
 		// "pl-PL",
